@@ -1,0 +1,31 @@
+---
+title: "exploratory data analysis"
+author: "Peter"
+date: '2019-01-02'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Dependencies
+
+```{r load dependencies}
+
+library(tidyverse)
+
+```
+
+
+## Read the data
+
+I will analyse the training data set to learn more about the data itself.
+
+```{r read data}
+
+train <- read_csv("../../data/adult.data")
+
+```
+
+
