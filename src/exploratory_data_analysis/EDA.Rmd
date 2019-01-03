@@ -275,7 +275,7 @@ plot_correlation(train_completed, type = "discrete",
                  ggtheme = theme_gray(base_size = 30),
                  theme_config = list(legend.position = "bottom", 
                                      axis.text.x = element_text(angle = 90)))
-# ignore discrete varialbes with more than 7 categories 
+# ignore discrete varialbes with more than 8 categories 
 # workclass: 8 categories
 # education: 16 
 # marital_stat: 7
