@@ -301,6 +301,10 @@ test_completed <- test_completed %>%
   mutate(label = as.numeric(factor(label)) - 1)
 ```
 
+*Balancing positive and negative labels*
+
+We have more than 10 times the number of features than the data so I do not think that I need to artificially balance the data set at this point.
+
 
 I will save `train_complete` and `test_complete` as `csv` files then proceed to modeling in Python.
 
