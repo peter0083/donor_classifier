@@ -2,7 +2,7 @@
 title: "exploratory data analysis"
 author: "Peter"
 date: '2019-01-02'
-output: pdf_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -213,7 +213,45 @@ plot_histogram(train$age, title = "age distribution")
 
 ```{r fnlwgt}
 
-plot_histogram(train$fnlwgt)
+plot_histogram(train$fnlwgt, title = "final weight distribution")
+
+```
+
+```{r edu num}
+
+plot_histogram(train$education_num, title = "education years distribution")
+
+```
+
+```{r capital gain}
+
+plot_histogram(train$capital_gain, title = "capital gain distribution")
+
+```
+
+```{r capital loss}
+
+plot_histogram(train$capital_loss, title = "capital loss distribution")
+
+```
+
+```{r hours worked}
+
+plot_histogram(train$hr_per_wk, title = "hours worked per week distribution")
+
+```
+
+Continous variables seem okay. `capital_gain` and `capital_loss` have very high frequencies around zero and extreme outliers. `age` and `fnlwgt` seem to have some outliers too. 
+
+I will handle outliers when I do another round of data pre-processing in Python. I will save `train_complete` and `test_complete` as `csv` files then proceed to modeling in Python.
+
+```{r save output to csv}
+
+# save train_complete to csv
+write.csv(train_completed, '../../data/train_complete.csv')
+
+# save test_complete to csv
+write.csv(test_completed, '../../data/test_complete.csv')
 
 ```
 
