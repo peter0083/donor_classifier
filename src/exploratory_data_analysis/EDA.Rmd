@@ -289,6 +289,19 @@ plot_correlation(train_completed, type = "discrete",
 
 As expected, some categories in `relationship`, `marital_stat` and `sex` are tightly correlated.
 
+*Replace labels with 0 and 1*
+
+```{r relabel}
+
+# ref: https://stackoverflow.com/questions/47075641/recode-a-string-column-into-integer-using-dplyr
+train_completed <- train_completed %>% 
+  mutate(label = as.numeric(factor(label)) - 1)
+
+test_completed <- test_completed %>% 
+  mutate(label = as.numeric(factor(label)) - 1)
+```
+
+
 I will save `train_complete` and `test_complete` as `csv` files then proceed to modeling in Python.
 
 ```{r save output to csv}

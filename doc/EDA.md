@@ -9,14 +9,14 @@ Peter
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ─────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
     ## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
     ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
     ## ✔ readr   1.1.1     ✔ forcats 0.3.0
 
-    ## ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -341,6 +341,18 @@ plot_correlation(train_completed, type = "discrete",
 
 As expected, some categories in `relationship`, `marital_stat` and `sex`
 are tightly correlated.
+
+*Replace labels with 0 and
+1*
+
+``` r
+# ref: https://stackoverflow.com/questions/47075641/recode-a-string-column-into-integer-using-dplyr
+train_completed <- train_completed %>% 
+  mutate(label = as.numeric(factor(label)) - 1)
+
+test_completed <- test_completed %>% 
+  mutate(label = as.numeric(factor(label)) - 1)
+```
 
 I will save `train_complete` and `test_complete` as `csv` files then
 proceed to modeling in Python.
