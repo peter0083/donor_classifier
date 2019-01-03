@@ -88,65 +88,67 @@ Initial findings suggest no missing columns and missing values are present in th
 
 ```{r workclass}
 
-plot_bar(train$workclass)
+plot_bar(train$workclass, title = "work class")
 
 ```
 
 ```{r education}
 
-plot_bar(train$education)
+plot_bar(train$education, title = "education")
 
 ```
 
 
 ```{r marital status}
 
-plot_bar(train$marital_stat)
+plot_bar(train$marital_stat, title = "marital status")
 
 ```
 
 
 ```{r Occupation}
 
-plot_bar(train$occupation)
+plot_bar(train$occupation, title = "occupation")
 
 ```
 
 ```{r relationship}
 
-plot_bar(train$relationship)
+plot_bar(train$relationship, title = "relationship")
 
 ```
 
 
 ```{r race}
 
-plot_bar(train$race)
+plot_bar(train$race, title = "race")
 
 ```
 
 ```{r sex}
 
-plot_bar(train$sex)
+plot_bar(train$sex, title = "gender")
 
 ```
 
 
 ```{r native country}
 
-plot_bar(train$native_country)
+plot_bar(train$native_country, title = "native countries")
 
 ```
 
 
 ```{r label}
 
-plot_bar(train$label)
+plot_bar(train$label, title = "label")
 
 ```
 
 
 My previous finding did not detect any missing values. It turns out that some `?` values are present in the `workclass`, `occupation`, and `native_country` feature. I will treat these values as missing data and remove them from training and test set.
+
+*Remove missing data from categorical variables*
 
 (code ref: https://suzan.rbind.io/2018/02/dplyr-tutorial-3/#filtering-based-on-multiple-conditions)
 
@@ -198,6 +200,18 @@ nrow(train) == (nrow(train_completed) + nrow(train %>%
 # check test set
 nrow(test) == (nrow(test_completed) + nrow(test %>% 
   filter(str_detect(workclass, "\\?") | str_detect(occupation, "\\?") | str_detect(native_country, "\\?"))))
+
+```
+
+*Examine continuous variables*
+
+```{r age}
+
+plot_histogram(train$age, title = "age distribution") 
+
+```
+
+```{r}
 
 ```
 
