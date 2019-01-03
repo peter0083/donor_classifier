@@ -211,7 +211,9 @@ plot_histogram(train$age, title = "age distribution")
 
 ```
 
-```{r}
+```{r fnlwgt}
+
+plot_histogram(train$fnlwgt)
 
 ```
 
