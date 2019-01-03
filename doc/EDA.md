@@ -327,7 +327,7 @@ plot_correlation(train_completed, type = "discrete",
 ![](EDA_files/figure-gfm/correlation%20viz%20discrete-1.png)<!-- -->
 
 ``` r
-# ignore discrete varialbes with more than 7 categories 
+# ignore discrete varialbes with more than 8 categories 
 # workclass: 8 categories
 # education: 16 
 # marital_stat: 7
