@@ -9,7 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Load Dependencies
+### Load Dependencies
 
 ```{r load dependencies}
 
@@ -18,7 +18,7 @@ library(DataExplorer)
 ```
 
 
-## Read the data
+### Read the data
 
 I will analyse the training data set to learn more about the data itself.
 
@@ -33,20 +33,24 @@ test <- read.csv("../../data/adult.test",
                   stringsAsFactors = TRUE)
 ```
 
-## Data cleaning
+### Data cleaning
 
 ```{r data cleaning}
 
 # add column names into the data frame
 
-column_name_string <- c("age", "workclass", "fnlwgt", "education", "education_num", "marital_stat", "occupation", "relationship", "race", "sex", "capital_gain", "capital_loss", "hr_per_wk", "native_country", "label")
+column_name_string <- c("age", "workclass", "fnlwgt", 
+                        "education", "education_num", "marital_stat", 
+                        "occupation", "relationship", "race", "sex", 
+                        "capital_gain", "capital_loss", "hr_per_wk", 
+                        "native_country", "label")
 
 # ref: https://stackoverflow.com/questions/6081439/changing-column-names-of-a-data-frame
 colnames(train) <- column_name_string
 colnames(test) <- column_name_string
 ```
 
-## Exploratory Data Analysis
+### Exploratory Data Analysis
 
 *Examine the variables*
 
@@ -67,15 +71,14 @@ Note to self: These three variables should be re-examined for its relevance as a
 
 ```{r summary1}
 
-introduce(train)
-
+knitr::kable(introduce(train))
 
 ```
 
 
 ```{r summary2}
 
-introduce(test)
+knitr::kable(introduce(test))
 
 ```
 
@@ -176,11 +179,15 @@ I need to remove 2399 rows from training set and 1221 rows from test set. I am r
 
 # remove missing values from training set
 train_completed <- train %>% 
-  filter(!str_detect(workclass, "\\?") & !str_detect(occupation, "\\?") & !str_detect(native_country, "\\?"))
+  filter(!str_detect(workclass, "\\?") & 
+           !str_detect(occupation, "\\?") & 
+           !str_detect(native_country, "\\?"))
 
 # remove missing values from test set
 test_completed <- test %>% 
-  filter(!str_detect(workclass, "\\?") & !str_detect(occupation, "\\?") & !str_detect(native_country, "\\?"))
+  filter(!str_detect(workclass, "\\?") & 
+           !str_detect(occupation, "\\?") & 
+           !str_detect(native_country, "\\?"))
   
 ```
 
@@ -191,7 +198,9 @@ test_completed <- test %>%
 
 # check training set
 nrow(train) == (nrow(train_completed) + nrow(train %>% 
-  filter(str_detect(workclass, "\\?") | str_detect(occupation, "\\?") | str_detect(native_country, "\\?"))))
+  filter(str_detect(workclass, "\\?") | 
+           str_detect(occupation, "\\?") | 
+           str_detect(native_country, "\\?"))))
 
 ```
 
@@ -199,7 +208,9 @@ nrow(train) == (nrow(train_completed) + nrow(train %>%
 
 # check test set
 nrow(test) == (nrow(test_completed) + nrow(test %>% 
-  filter(str_detect(workclass, "\\?") | str_detect(occupation, "\\?") | str_detect(native_country, "\\?"))))
+  filter(str_detect(workclass, "\\?") | 
+           str_detect(occupation, "\\?") | 
+           str_detect(native_country, "\\?"))))
 
 ```
 
@@ -243,7 +254,42 @@ plot_histogram(train$hr_per_wk, title = "hours worked per week distribution")
 
 Continous variables seem okay. `capital_gain` and `capital_loss` have very high frequencies around zero and extreme outliers. `age` and `fnlwgt` seem to have some outliers too. 
 
-I will handle outliers when I do another round of data pre-processing in Python. I will save `train_complete` and `test_complete` as `csv` files then proceed to modeling in Python.
+I will handle outliers when I do another round of data pre-processing in Python.
+
+
+*Examine correlation*
+
+```{r correlation viz continuous}
+
+# correlation for continuous varaibles
+plot_correlation(train, type = "continuous")
+
+```
+
+```{r correlation viz discrete, fig.width=28, fig.height=16}
+
+# correlation for discrete varaibles
+# using cleaned data so missing categories are removed
+plot_correlation(train_completed, type = "discrete",
+                 maxcat = 8L,
+                 ggtheme = theme_gray(base_size = 30),
+                 theme_config = list(legend.position = "bottom", 
+                                     axis.text.x = element_text(angle = 90)))
+# ignore discrete varialbes with more than 7 categories 
+# workclass: 8 categories
+# education: 16 
+# marital_stat: 7
+# occupation: 14
+# relationship: 6
+# race: 5
+# sex: 2
+# native_country: 42
+# label: 2
+```
+
+As expected, some categories in `relationship`, `marital_stat` and `sex` are tightly correlated.
+
+I will save `train_complete` and `test_complete` as `csv` files then proceed to modeling in Python.
 
 ```{r save output to csv}
 

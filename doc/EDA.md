@@ -3,7 +3,7 @@ exploratory data analysis
 Peter
 2019-01-02
 
-## Load Dependencies
+### Load Dependencies
 
 ``` r
 library(tidyverse)
@@ -24,7 +24,7 @@ library(tidyverse)
 library(DataExplorer)
 ```
 
-## Read the data
+### Read the data
 
 I will analyse the training data set to learn more about the data
 itself.
@@ -39,19 +39,23 @@ test <- read.csv("../../data/adult.test",
                   stringsAsFactors = TRUE)
 ```
 
-## Data cleaning
+### Data cleaning
 
 ``` r
 # add column names into the data frame
 
-column_name_string <- c("age", "workclass", "fnlwgt", "education", "education_num", "marital_stat", "occupation", "relationship", "race", "sex", "capital_gain", "capital_loss", "hr_per_wk", "native_country", "label")
+column_name_string <- c("age", "workclass", "fnlwgt", 
+                        "education", "education_num", "marital_stat", 
+                        "occupation", "relationship", "race", "sex", 
+                        "capital_gain", "capital_loss", "hr_per_wk", 
+                        "native_country", "label")
 
 # ref: https://stackoverflow.com/questions/6081439/changing-column-names-of-a-data-frame
 colnames(train) <- column_name_string
 colnames(test) <- column_name_string
 ```
 
-## Exploratory Data Analysis
+### Exploratory Data Analysis
 
 *Examine the variables*
 
@@ -93,25 +97,23 @@ Note to self: These three variables should be re-examined for its
 relevance as a feature - `fnlwgt` - `education_num` - `relationship`
 
 *Data Set
-    Summary*
+Summary*
 
 ``` r
-introduce(train)
+knitr::kable(introduce(train))
 ```
 
-    ##    rows columns discrete_columns continuous_columns all_missing_columns
-    ## 1 32561      15                9                  6                   0
-    ##   total_missing_values complete_rows total_observations memory_usage
-    ## 1                    0         32561             488415      1968664
+|  rows | columns | discrete\_columns | continuous\_columns | all\_missing\_columns | total\_missing\_values | complete\_rows | total\_observations | memory\_usage |
+| ----: | ------: | ----------------: | ------------------: | --------------------: | ---------------------: | -------------: | ------------------: | ------------: |
+| 32561 |      15 |                 9 |                   6 |                     0 |                      0 |          32561 |              488415 |       1968664 |
 
 ``` r
-introduce(test)
+knitr::kable(introduce(test))
 ```
 
-    ##    rows columns discrete_columns continuous_columns all_missing_columns
-    ## 1 16282      15               10                  5                   0
-    ##   total_missing_values complete_rows total_observations memory_usage
-    ## 1                    5         16281             244230       997488
+|  rows | columns | discrete\_columns | continuous\_columns | all\_missing\_columns | total\_missing\_values | complete\_rows | total\_observations | memory\_usage |
+| ----: | ------: | ----------------: | ------------------: | --------------------: | ---------------------: | -------------: | ------------------: | ------------: |
+| 16282 |      15 |                10 |                   5 |                     0 |                      5 |          16281 |              244230 |        997488 |
 
 There are 14 features (+ 1 label = 15 columns) and 32561 rows of
 observations. Professor Mark Schmidt (UBC CS) suggested that the data
@@ -218,11 +220,15 @@ concerned.
 ``` r
 # remove missing values from training set
 train_completed <- train %>% 
-  filter(!str_detect(workclass, "\\?") & !str_detect(occupation, "\\?") & !str_detect(native_country, "\\?"))
+  filter(!str_detect(workclass, "\\?") & 
+           !str_detect(occupation, "\\?") & 
+           !str_detect(native_country, "\\?"))
 
 # remove missing values from test set
 test_completed <- test %>% 
-  filter(!str_detect(workclass, "\\?") & !str_detect(occupation, "\\?") & !str_detect(native_country, "\\?"))
+  filter(!str_detect(workclass, "\\?") & 
+           !str_detect(occupation, "\\?") & 
+           !str_detect(native_country, "\\?"))
 ```
 
 ``` r
@@ -231,7 +237,9 @@ test_completed <- test %>%
 
 # check training set
 nrow(train) == (nrow(train_completed) + nrow(train %>% 
-  filter(str_detect(workclass, "\\?") | str_detect(occupation, "\\?") | str_detect(native_country, "\\?"))))
+  filter(str_detect(workclass, "\\?") | 
+           str_detect(occupation, "\\?") | 
+           str_detect(native_country, "\\?"))))
 ```
 
     ## [1] TRUE
@@ -239,7 +247,9 @@ nrow(train) == (nrow(train_completed) + nrow(train %>%
 ``` r
 # check test set
 nrow(test) == (nrow(test_completed) + nrow(test %>% 
-  filter(str_detect(workclass, "\\?") | str_detect(occupation, "\\?") | str_detect(native_country, "\\?"))))
+  filter(str_detect(workclass, "\\?") | 
+           str_detect(occupation, "\\?") | 
+           str_detect(native_country, "\\?"))))
 ```
 
     ## [1] TRUE
@@ -288,8 +298,52 @@ very high frequencies around zero and extreme outliers. `age` and
 `fnlwgt` seem to have some outliers too.
 
 I will handle outliers when I do another round of data pre-processing in
-Python. I will save `train_complete` and `test_complete` as `csv` files
-then proceed to modeling in Python.
+Python.
+
+*Examine correlation*
+
+``` r
+# correlation for continuous varaibles
+plot_correlation(train, type = "continuous")
+```
+
+![](EDA_files/figure-gfm/correlation%20viz%20continuous-1.png)<!-- -->
+
+``` r
+# correlation for discrete varaibles
+# using cleaned data so missing categories are removed
+plot_correlation(train_completed, type = "discrete",
+                 maxcat = 8L,
+                 ggtheme = theme_gray(base_size = 30),
+                 theme_config = list(legend.position = "bottom", 
+                                     axis.text.x = element_text(angle = 90)))
+```
+
+    ## 3 features with more than 8 categories ignored!
+    ## education: 16 categories
+    ## occupation: 14 categories
+    ## native_country: 41 categories
+
+![](EDA_files/figure-gfm/correlation%20viz%20discrete-1.png)<!-- -->
+
+``` r
+# ignore discrete varialbes with more than 7 categories 
+# workclass: 8 categories
+# education: 16 
+# marital_stat: 7
+# occupation: 14
+# relationship: 6
+# race: 5
+# sex: 2
+# native_country: 42
+# label: 2
+```
+
+As expected, some categories in `relationship`, `marital_stat` and `sex`
+are tightly correlated.
+
+I will save `train_complete` and `test_complete` as `csv` files then
+proceed to modeling in Python.
 
 ``` r
 # save train_complete to csv
