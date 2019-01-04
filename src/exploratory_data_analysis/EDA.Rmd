@@ -303,7 +303,41 @@ test_completed <- test_completed %>%
 
 *Balancing positive and negative labels*
 
-We have more than 10 times the number of features than the data so I do not think that I need to artificially balance the data set at this point.
+```{r check label balance}
+
+train_completed %>% 
+  select(label) %>% 
+  filter(label == 0) %>% 
+  count()
+
+```
+
+```{r check label balance2}
+
+train_completed %>% 
+  select(label) %>% 
+  filter(label == 1) %>% 
+  count()
+
+```
+
+```{r check label balance3}
+
+n_positive <- train_completed %>% 
+  select(label) %>% 
+  filter(label == 1) %>% 
+  count()
+
+n_negative <- train_completed %>% 
+  select(label) %>% 
+  filter(label == 0) %>% 
+  count()
+
+n_negative$n[1]/n_positive$n[1]
+```
+
+
+We have more than 10 times the number of observations than the number of features but the negative cases are three times more common than the positives. It is expected. For example, there is only one Bill Gates but there are many average Joe. I will not balance the data set at this point because some stackoverflow users suggest that a ratio larger than 10:1 and/or minority class less than 1000 observations may require balancing.
 
 
 I will save `train_complete` and `test_complete` as `csv` files then proceed to modeling in Python.
