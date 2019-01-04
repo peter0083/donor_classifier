@@ -337,7 +337,9 @@ n_negative$n[1]/n_positive$n[1]
 ```
 
 
-We have more than 10 times the number of observations than the number of features but the negative cases are three times more common than the positives. It is expected. For example, there is only one Bill Gates but there are many average Joe. I will not balance the data set at this point because some stackoverflow users suggest that a ratio larger than 10:1 and/or minority class less than 1000 observations may require balancing.
+We have more than 10 times the number of observations than the number of features but the negative cases are three times more common than the positives. It is expected. For example, there is only one Bill Gates but there are many average Joe. I will not balance the data set at this point because some stackoverflow posts suggest that a ratio larger than 10:1 and/or minority class less than 1000 observations may require balancing.
+
+(ref: https://datascience.stackexchange.com/questions/11788/when-should-we-consider-a-dataset-as-imbalanced)
 
 
 I will save `train_complete` and `test_complete` as `csv` files then proceed to modeling in Python.
