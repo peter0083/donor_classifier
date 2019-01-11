@@ -298,8 +298,14 @@ train_completed <- train_completed %>%
   mutate(label = as.numeric(factor(label)) - 1)
 
 test_completed <- test_completed %>% 
-  mutate(label = as.numeric(factor(label)) - 1)
+  mutate(label = as.numeric(factor(label)) - 2) # there are 3 levels including the first row which was not supposed to be there.
 ```
+
+```{r}
+test_completed %>% 
+  mutate(label)
+```
+
 
 *Balancing positive and negative labels*
 
