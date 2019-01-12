@@ -20,9 +20,9 @@ model = joblib.load('../modeling/rf_clf.pkl')
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    print("I have a model")
-    json = request.json
-    query = pd.get_dummies(pd.DataFrame(json_))
+    print("predicitng with a Random Forest classifier")
+    json_of_interest = request.json
+    query = pd.get_dummies(pd.DataFrame(json_of_interest))
 
     print(query.shape)
 
