@@ -8,7 +8,7 @@ import shutil
 import time
 import traceback
 
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from sklearn.externals import joblib
 import pandas as pd
 
@@ -17,14 +17,33 @@ app = Flask(__name__)
 # load the model
 model = joblib.load('../modeling/rf_clf.pkl')
 
+# load the training data
+train_df_template = pd.read_csv('../../data/train_complete.csv', index_col= 0)
+
+# get dummy columns from data template
+dummy_cols = ["workclass", "education",
+             "marital_stat", "occupation",
+             "relationship", "race",
+             "sex", "native_country"]
+
+train_df_template_with_dummies = pd.get_dummies(train_df_template, columns= dummy_cols)
+
+# save the column names
+model_columns = list(train_df_template_with_dummies)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    print("predicitng with a Random Forest classifier")
-    json_of_interest = request.json
-    query = pd.get_dummies(pd.DataFrame(json_of_interest))
+    jsonData = request.json
+    client_df = pd.DataFrame(jsonData)
+    # ref: https://github.com/amirziai/sklearnflask/issues/3
+    query = client_df.reindex(columns=model_columns, fill_value=0)
+    
+    prediction = list(model.predict(query))
 
-    print(query.shape)
+    return jsonify({
+        "prediction": prediction
+    })
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
