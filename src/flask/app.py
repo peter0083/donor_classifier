@@ -11,6 +11,7 @@ import traceback
 from flask import Flask, request, jsonify
 from sklearn.externals import joblib
 import pandas as pd
+from pandas.io.json import json_normalize
 
 app = Flask(__name__)
 
@@ -28,17 +29,20 @@ dummy_cols = ["workclass", "education",
 
 train_df_template_with_dummies = pd.get_dummies(train_df_template, columns= dummy_cols)
 
+train_df_template_with_dummies_no_label = train_df_template_with_dummies.drop(['label'], axis=1)
+
 # save the column names
-model_columns = list(train_df_template_with_dummies)
+model_columns = list(train_df_template_with_dummies_no_label.columns)
 
 @app.route('/predict', methods=['POST'])
 def predict():
     jsonData = request.json
-    client_df = pd.DataFrame(jsonData)
+    client_df = pd.get_dummies(pd.DataFrame.from_dict(json_normalize(jsonData), orient='columns'))
     # ref: https://github.com/amirziai/sklearnflask/issues/3
     query = client_df.reindex(columns=model_columns, fill_value=0)
     
-    prediction = list(model.predict(query))
+    # ref: https://stackoverflow.com/questions/26646362/numpy-array-is-not-json-serializable
+    prediction = model.predict(query).tolist()
 
     return jsonify({
         "prediction": prediction
