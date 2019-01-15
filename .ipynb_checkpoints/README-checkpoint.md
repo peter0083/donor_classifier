@@ -7,14 +7,14 @@ Data source: https://archive.ics.uci.edu/ml/datasets/Adult
 
 
 
-###1. Explorartory data analysis
+### 1. Explorartory data analysis
 - documented [here](https://github.com/peter0083/donor_classifier/blob/master/doc/EDA.md)
 
-###2. ML model building
+### 2. ML model building
 - traditional ML models documented [here](https://github.com/peter0083/donor_classifier/blob/master/src/modeling/ml_model.ipynb)
 - neural net model documented [here](https://github.com/peter0083/donor_classifier/blob/master/src/modeling/neural_net.ipynb)
 
-###3. ML model as a RESTful API
+### 3. ML model as a RESTful API
 - [actual server app](https://github.com/peter0083/donor_classifier/blob/master/app_web.py)
 - the API is deployed on Heroku (https://donorclf.herokuapp.com/)
 
