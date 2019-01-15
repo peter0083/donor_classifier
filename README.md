@@ -16,13 +16,13 @@ Data source: https://archive.ics.uci.edu/ml/datasets/Adult
 
 ### 3. ML model as a RESTful API
 - [actual server app](https://github.com/peter0083/donor_classifier/blob/master/app_web.py)
-- the API is deployed on Heroku (https://donorclf.herokuapp.com/)
+- the API is deployed on Heroku (https://donorclf.herokuapp.com/predict)
 
 Sending a request to the API:
 
 **example:**
 
-We can send a request to the API and request for a prediction for the following donor:
+We can send a request to https://donorclf.herokuapp.com/predict and request for a prediction for the following donor:
 
 | age            | 39            |
 |----------------|---------------|
