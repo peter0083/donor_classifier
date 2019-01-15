@@ -24,20 +24,21 @@ example:
 
 We can send a request to the API and request for a prediction for the following donor:
 
-age: 39
-workclass: State-gov
-fnlwgt: 77516
-education: Bachelors
-education_num: 13
-marital_stat: Never-married
-occupation: Adm-clerical
-relationship: Not-in-family
-race: White
-sex: Male
-capital_gain: 2174
-capital_loss: 0
-hr_per_wk: 40
-native_country: United-States
+| age            | 39            |
+|----------------|---------------|
+| workclass      | State-gov     |
+| fnlwgt         | 77516         |
+| education      | Bachelors     |
+| education_num  | 13            |
+| marital_stat   | Never-married |
+| occupation     | Adm-clerical  |
+| relationship   | Not-in-family |
+| race           | White         |
+| sex            | Male          |
+| capital_gain   | 2174          |
+| capital_loss   | 0             |
+| hr_per_wk      | 40            |
+| native_country | United-States |
 
 The request should be sent in `json` format
 
