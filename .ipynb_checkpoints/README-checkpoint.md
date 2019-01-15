@@ -71,6 +71,38 @@ The API should return a prediction in `json` format
 }
 ```
 
+**example2:**
+
+request
+```json
+{
+    "age": 34,
+    "workclass": " Private",
+    "fnlwgt": 77516,
+    "education": " Masters",
+    "education_num": 20,
+    "marital_stat": " Married-civ-spouse",
+    "occupation": " Tech-support",
+    "relationship": " Husband",
+    "race": " Asian-Pac-Islander",
+    "sex": " Male",
+    "capital_gain": 2000,
+    "capital_loss": 0,
+    "hr_per_wk": 80,
+    "native_country": " Canada"
+}
+```
+
+returns a prediction
+
+```json
+{
+    "prediction": [
+        1
+    ]
+}
+```
+
 If the prediction is **0**, then the model classifies the donor as a donor that makes **LESS** than $50k annually.
 
 If the prediction is **1**, then the model classifies the donor as a donor that makes **MORE** than $50k annually.
