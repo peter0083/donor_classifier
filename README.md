@@ -18,14 +18,16 @@ Data source: https://archive.ics.uci.edu/ml/datasets/Adult
 - [actual server app](https://github.com/peter0083/donor_classifier/blob/master/app_web.py)
 - the API is deployed on Heroku (https://donorclf.herokuapp.com/predict)
 
+
 Sending a request to the API:
 
 **example:**
 
 We can send a request to https://donorclf.herokuapp.com/predict and request for a prediction for the following donor:
 
-| age            | 39            |
+| feature        | value         |
 |----------------|---------------|
+| age            | 39            |
 | workclass      | State-gov     |
 | fnlwgt         | 77516         |
 | education      | Bachelors     |
@@ -39,6 +41,8 @@ We can send a request to https://donorclf.herokuapp.com/predict and request for 
 | capital_loss   | 0             |
 | hr_per_wk      | 40            |
 | native_country | United-States |
+
+Note: information on the features can be found [here](https://archive.ics.uci.edu/ml/datasets/Adult)
 
 The request should be sent in `json` format
 
